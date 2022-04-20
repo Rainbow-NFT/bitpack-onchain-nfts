@@ -83,7 +83,7 @@ contract SvgBitpack is ERC721, Ownable {
         attributes_ := add(attributes_, shl(120, 0xEF696A)) // 5
         attributes_ := add(attributes_, shl(144, 0xF8F58A)) // 6
         attributes_ := add(attributes_, shl(168, 0x88FF89)) // 7
-        attributes_ := add(attributes_, shl(216, 10000)) // Speed | 10,000ms (millisecond)
+        attributes_ := add(attributes_, shl(216, 10000)) // Speed | 10,000ms (milli)
         }
 
         attributes[newTokenId] = attributes_;
@@ -114,7 +114,7 @@ contract SvgBitpack is ERC721, Ownable {
        render3
         ));
 
-        string memory json = base64.encode(
+    string memory json = base64.encode(
             bytes(
                 string(
                     abi.encodePacked(

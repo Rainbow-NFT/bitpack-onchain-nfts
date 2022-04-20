@@ -65,10 +65,28 @@ contract SvgBitpackTest is DSTest, stdCheats {
     }
 
     function testTransfer() public {
+         for (uint256 i = 0; i < 10000; ++i) {
         svgBitpack.mintTo(address(1));
+        }
         vm.startPrank(address(1));
-
-        svgBitpack.transferFrom(address(1), address(0xBEEF), uint256(1));
+         for (uint256 i = 1; i < 10001; ++i) {
+        svgBitpack.transferFrom(address(1), address(2), i);
+        }
+        vm.stopPrank();
+        vm.startPrank(address(2));
+        for (uint256 i = 1; i < 10001; ++i) {
+        svgBitpack.transferFrom(address(2), address(1), i);
+        }
+        vm.stopPrank();
+        vm.startPrank(address(1));
+        for (uint256 i = 1; i < 10001; ++i) {
+        svgBitpack.transferFrom(address(1), address(2), i);
+        }
+        vm.stopPrank();
+        vm.startPrank(address(2));
+        for (uint256 i = 1; i < 10001; ++i) {
+        svgBitpack.transferFrom(address(2), address(1), i);
+        }
     }
 
     function testFailTransfer() public {
