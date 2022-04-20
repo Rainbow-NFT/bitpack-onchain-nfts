@@ -24,9 +24,18 @@ contract SvgUnoptimized is ERC721, Ownable {
     // External contract
     Base64 base64;
 
-    struct svg {
-        string[] svgpiece;
-    }
+    string Svg0 = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%' fill='url(#pattern)' /><defs><linearGradient id='gradient' x1='100%' y1='10%' x2='0%' y2='10%'><stop offset='6.25%' stop-color='#";
+    string Svg1 = "'/><stop offset='18.75%' stop-color='#";
+    string Svg2 = "'/><stop offset='31.25%' stop-color='#";
+    string Svg3 = "'/><stop offset='56.25%' stop-color='#";
+    string Svg4 = "'/><stop offset='68.75%' stop-color='#";
+    string Svg5 = "'/><stop offset='81.25%' stop-color='#";
+    string Svg6 = "'/><stop offset='93.75%' stop-color='#";
+    string Svg7 = "'/><stop offset='100%' stop-color='#";
+    string Svg8 = "'/></linearGradient></defs><pattern id='pattern' x='0' y='0' width='400%' height='100%' patternUnits='userSpaceOnUse'><rect x='-150%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-150%' to='50%' dur='";
+    string Svg9 = "ms' repeatCount='indefinite'/></rect><rect x='-350%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-350%' to='-150%' dur='";
+    string Svg10 = "ms' repeatCount='indefinite'/></rect></pattern></svg>";
+  
 
     struct attrib {
         uint24 color0;
@@ -40,7 +49,6 @@ contract SvgUnoptimized is ERC721, Ownable {
         uint24 speed;
     }
   
-    svg Svg;
     attrib Attrib;
 
     constructor(
@@ -49,29 +57,7 @@ contract SvgUnoptimized is ERC721, Ownable {
         Base64 _base64
     ) ERC721(_name, _symbol) {
         base64 = _base64;
-        // Color  | #0
-        Svg.svgpiece.push("<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%' fill='url(#pattern)' /><defs><linearGradient id='gradient' x1='100%' y1='10%' x2='0%' y2='10%'><stop offset='6.25%' stop-color='#");
-        // Color  | #1
-        Svg.svgpiece.push("'/><stop offset='18.75%' stop-color='#");
-        // Color  | #2
-        Svg.svgpiece.push("'/><stop offset='31.25%' stop-color='#");
-        // Color  | #3
-        Svg.svgpiece.push("'/><stop offset='56.25%' stop-color='#");
-        // Color  | #4
-        Svg.svgpiece.push("'/><stop offset='68.75%' stop-color='#");
-        // Color  | #5
-        Svg.svgpiece.push("'/><stop offset='81.25%' stop-color='#");
-        // Color  | #6
-        Svg.svgpiece.push("'/><stop offset='93.75%' stop-color='#");
-        // Color  | #7
-        Svg.svgpiece.push("'/><stop offset='100%' stop-color='#");
-        // Speed  | #8
-        Svg.svgpiece.push("'/></linearGradient></defs><pattern id='pattern' x='0' y='0' width='400%' height='100%' patternUnits='userSpaceOnUse'><rect x='-150%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-150%' to='50%' dur='");
-        // Speed2 | #9
-        Svg.svgpiece.push("ms' repeatCount='indefinite'/></rect><rect x='-350%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-350%' to='-150%' dur='");
-        // Final  | #10
-        Svg.svgpiece.push("ms' repeatCount='indefinite'/></rect></pattern></svg>");
-    }
+       }
 
     function mintTo(address recipient) public payable returns (uint256) {
         uint256 newTokenId = ++currentTokenId;
@@ -142,13 +128,13 @@ contract SvgUnoptimized is ERC721, Ownable {
     string memory partialSvg;
 
     return partialSvg = string(abi.encodePacked(
-        Svg.svgpiece[0],
+        Svg0,
         attributes[tokenId].color0.uint24tohexstr(),
-        Svg.svgpiece[1],
+        Svg1,
         attributes[tokenId].color1.uint24tohexstr(),
-        Svg.svgpiece[2],
+        Svg2,
         attributes[tokenId].color2.uint24tohexstr(),
-        Svg.svgpiece[3],
+        Svg3,
         attributes[tokenId].color3.uint24tohexstr()
           
     ));
@@ -159,13 +145,13 @@ contract SvgUnoptimized is ERC721, Ownable {
     string memory partialSvg;
     
     return  partialSvg = string(abi.encodePacked(
-        Svg.svgpiece[4],
+        Svg4,
         attributes[tokenId].color4.uint24tohexstr(),
-        Svg.svgpiece[5],
+        Svg5,
         attributes[tokenId].color5.uint24tohexstr(),
-        Svg.svgpiece[6],
+        Svg6,
         attributes[tokenId].color6.uint24tohexstr(),
-        Svg.svgpiece[7],
+        Svg7,
         attributes[tokenId].color7.uint24tohexstr()
     ));
     }
@@ -175,11 +161,11 @@ contract SvgUnoptimized is ERC721, Ownable {
     string memory partialSvg;
     
     return  partialSvg = string(abi.encodePacked(
-        Svg.svgpiece[8],
+        Svg8,
         attributes[tokenId].speed.toString(),
-        Svg.svgpiece[9],
+        Svg9,
         attributes[tokenId].speed.toString(),
-        Svg.svgpiece[10]
+        Svg10
     ));
     }
     
