@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.13;
 
 import "./stuff/ERC721.sol";
 import "./stuff/Ownable.sol";
 import "./stuff/Strings.sol";
-import "./stuff/Base64.sol";
-import "./stuff/ToHex.sol";
 
 error MintPriceNotPaid();
 error MaxSupply();
@@ -14,8 +12,6 @@ error WithdrawTransfer();
 error NotTheOwner();
 
 contract SvgBitpack is ERC721, Ownable {
-   using Strings for uint24;
-   using ToHex for uint24;
 
     string public baseURI;
     uint256 public currentTokenId;
@@ -25,7 +21,7 @@ contract SvgBitpack is ERC721, Ownable {
     mapping(uint256 => uint256) public attributes;
 
     // External contract
-    Base64 base64;
+    Strings strings;
 
     string Svg0 = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%' fill='url(#pattern)' /><defs><linearGradient id='gradient' x1='100%' y1='10%' x2='0%' y2='10%'><stop offset='6.25%' stop-color='#";
     string Svg1 = "'/><stop offset='18.75%' stop-color='#";
@@ -43,11 +39,10 @@ contract SvgBitpack is ERC721, Ownable {
     constructor(
         string memory _name,
         string memory _symbol,
-        Base64 _base64
+        Strings _strings
     ) ERC721(_name, _symbol) {
-        base64 = _base64;
+        strings = _strings;
     }
-
 
 
     function mintTo(address recipient) public payable returns (uint256) {
@@ -77,7 +72,6 @@ contract SvgBitpack is ERC721, Ownable {
         return newTokenId;
     }
 
-    
     function tokenURI(uint256 tokenId)
         public
         virtual
@@ -99,13 +93,13 @@ contract SvgBitpack is ERC721, Ownable {
        render3
         ));
 
-    string memory json = base64.encode(
+    string memory json = strings.encode(
             bytes(
                 string(
                     abi.encodePacked(
                         '{"name": "Rainbow", "description": "Bitpacked Rainbow on chain", "image": "data:image/svg+xml;base64,',
                         // Add data:image/svg+xml;base64 and then append our base64 encode our svg.
-                        base64.encode(bytes(finalSvg)),
+                        strings.encode(bytes(finalSvg)),
                         '"}'
                     )
                 )
@@ -117,22 +111,6 @@ contract SvgBitpack is ERC721, Ownable {
     );
 
         return finalTokenUri;
-    }
-
-
-    // Transfer from message sender to receiver address
-    function _transfer(address to, uint256 id) external {
-        // Underflow of the sender's balance is impossible because we check for
-        // ownership above and the recipient's balance can't realistically overflow.
-        unchecked {
-            --balanceOf[msg.sender];
-
-            ++balanceOf[to];
-        }
-
-        ownerOf[id] = to;
-
-        emit Transfer(address(msg.sender), to, id);
     }
 
     /// READ FUNCTIONS ///
@@ -180,13 +158,13 @@ contract SvgBitpack is ERC721, Ownable {
 
     return  partialSvg = string(abi.encodePacked(
         Svg0,
-        a0.uint24tohexstr(),
+        strings.uint24tohexstr(a0),
         Svg1,
-        a1.uint24tohexstr(),
+        strings.uint24tohexstr(a1),
         Svg2,
-        a2.uint24tohexstr(),
+        strings.uint24tohexstr(a2),
         Svg3,
-        a3.uint24tohexstr()
+        strings.uint24tohexstr(a3)
           
     ));
     }
@@ -235,13 +213,13 @@ contract SvgBitpack is ERC721, Ownable {
 
     return partialSvg = string(abi.encodePacked(
         Svg4,
-        a4.uint24tohexstr(),
+        strings.uint24tohexstr(a4),
         Svg5,
-        a5.uint24tohexstr(),
+        strings.uint24tohexstr(a5),
         Svg6,
-        a6.uint24tohexstr(),
+        strings.uint24tohexstr(a6),
         Svg7,
-        a7.uint24tohexstr()
+        strings.uint24tohexstr(a7)
     ));
     }
 
@@ -263,9 +241,9 @@ contract SvgBitpack is ERC721, Ownable {
 
         return  partialSvg = string(abi.encodePacked(
         Svg8,
-        speed.toString(),
+        strings.toString(speed),
         Svg9,
-        speed.toString(),
+        strings.toString(speed),
         Svg10
     ));
 

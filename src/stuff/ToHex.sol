@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-library ToHex {
+contract ToHex {
 
     function uint8tohexchar(uint8 i) public pure returns (uint8) {
         return (i > 9) ?

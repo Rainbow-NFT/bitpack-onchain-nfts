@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./stuff/ERC721.sol";
 import "./stuff/Ownable.sol";
-import "./stuff/Strings.sol";
+import "./stuff/StringsLib.sol";
 import "./stuff/Base64.sol";
 import "./stuff/ToHex.sol";
 
@@ -12,8 +12,7 @@ error MaxSupply();
 error NonExistentTokenURI();
 
 contract SvgUnoptimized is ERC721, Ownable {
-   using Strings for uint24;
-   using ToHex for uint24;
+   using StringsLib for uint24;
 
     string public baseURI;
     uint256 public currentTokenId;
@@ -23,6 +22,7 @@ contract SvgUnoptimized is ERC721, Ownable {
     uint256[] public attrib_;
     // External contract
     Base64 base64;
+    ToHex toHex;
 
     string Svg0 = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%' fill='url(#pattern)' /><defs><linearGradient id='gradient' x1='100%' y1='10%' x2='0%' y2='10%'><stop offset='6.25%' stop-color='#";
     string Svg1 = "'/><stop offset='18.75%' stop-color='#";
@@ -54,9 +54,11 @@ contract SvgUnoptimized is ERC721, Ownable {
     constructor(
         string memory _name,
         string memory _symbol,
-        Base64 _base64
+        Base64 _base64,
+        ToHex _toHex
     ) ERC721(_name, _symbol) {
         base64 = _base64;
+        toHex = _toHex;
        }
 
     function mintTo(address recipient) public payable returns (uint256) {
@@ -105,7 +107,7 @@ contract SvgUnoptimized is ERC721, Ownable {
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Rainbow", "description": "Bitpacked Rainbow on chain", "image": "data:image/svg+xml;base64,',
+                        '{"name": "Rainbow", "description": "Unoptimized Rainbow on chain", "image": "data:image/svg+xml;base64,',
                         // Add data:image/svg+xml;base64 and then append our base64 encode our svg.
                         base64.encode(bytes(finalSvg)),
                         '"}'
@@ -129,13 +131,13 @@ contract SvgUnoptimized is ERC721, Ownable {
 
     return partialSvg = string(abi.encodePacked(
         Svg0,
-        attributes[tokenId].color0.uint24tohexstr(),
+        toHex.uint24tohexstr(attributes[tokenId].color0),
         Svg1,
-        attributes[tokenId].color1.uint24tohexstr(),
+        toHex.uint24tohexstr(attributes[tokenId].color1),
         Svg2,
-        attributes[tokenId].color2.uint24tohexstr(),
+        toHex.uint24tohexstr(attributes[tokenId].color2),
         Svg3,
-        attributes[tokenId].color3.uint24tohexstr()
+        toHex.uint24tohexstr(attributes[tokenId].color3)
           
     ));
     }
@@ -146,13 +148,13 @@ contract SvgUnoptimized is ERC721, Ownable {
     
     return  partialSvg = string(abi.encodePacked(
         Svg4,
-        attributes[tokenId].color4.uint24tohexstr(),
+        toHex.uint24tohexstr(attributes[tokenId].color4),
         Svg5,
-        attributes[tokenId].color5.uint24tohexstr(),
+        toHex.uint24tohexstr(attributes[tokenId].color5),
         Svg6,
-        attributes[tokenId].color6.uint24tohexstr(),
+        toHex.uint24tohexstr(attributes[tokenId].color6),
         Svg7,
-        attributes[tokenId].color7.uint24tohexstr()
+        toHex.uint24tohexstr(attributes[tokenId].color7)
     ));
     }
 

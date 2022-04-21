@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-pragma solidity ^0.8.12;
+pragma solidity ^0.8.13;
 
 import {XConsole} from "./utils/Console.sol";
 import {DSTest} from "ds-test/test.sol";
 import {SvgBitpack} from "../SvgBitpack.sol";
-import "../stuff/Base64.sol";
-import "forge-std/stdlib.sol";
+import "../stuff/Strings.sol";
+import "forge-std/Test.sol";
 import {Vm} from "forge-std/Vm.sol";
 
-contract SvgBitpackTest is DSTest, stdCheats {
+contract SvgBitpackTest is DSTest {
     using stdStorage for StdStorage;
     XConsole console = new XConsole();
 
@@ -17,11 +17,11 @@ contract SvgBitpackTest is DSTest, stdCheats {
     StdStorage public stdStore;
 
     SvgBitpack public svgBitpack;
-    Base64 public base64;
+    Strings public strings;
 
     function setUp() public {
-        base64 = new Base64();
-        svgBitpack = new SvgBitpack("GM", "GN", base64);
+        strings = new Strings();
+        svgBitpack = new SvgBitpack("GM", "GN", strings);
     }
 
     function testMintTo() public {

@@ -6,7 +6,7 @@ pragma solidity ^0.8.13;
 /**
  * @dev String operations.
  */
-contract Strings {
+library StringsLib {
     bytes16 private constant _HEX_SYMBOLS = "0123456789abcdef";
 
     bytes internal constant TABLE =
@@ -73,7 +73,7 @@ contract Strings {
 
         return string(result);
     }
-
+    
     /**
      * @dev Converts a `uint256` to its ASCII `string` decimal representation.
      */
