@@ -103,21 +103,21 @@ contract SvgUnoptimized is ERC721, Ownable {
        render3
         ));
 
-        string memory json = base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name": "Rainbow", "description": "Unoptimized Rainbow on chain", "image": "data:image/svg+xml;base64,',
-                        // Add data:image/svg+xml;base64 and then append our base64 encode our svg.
-                        base64.encode(bytes(finalSvg)),
-                        '"}'
-                    )
+    string memory json = base64.encode(
+        bytes(
+            string(
+                abi.encodePacked(
+                    '{"name": "Rainbow", "description": "Unoptimized Rainbow on chain", "image": "data:image/svg+xml;base64,',
+                    // Add data:image/svg+xml;base64 and then append our base64 encode our svg.
+                    base64.encode(bytes(finalSvg)),
+                    '"}'
                 )
             )
-        );
+        )
+    );
         
-        string memory finalTokenUri = string(
-        abi.encodePacked("data:application/json;base64,", json)
+    string memory finalTokenUri = string(
+    abi.encodePacked("data:application/json;base64,", json)
     );
 
         return finalTokenUri;

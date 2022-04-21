@@ -23,19 +23,6 @@ contract SvgBitpack is ERC721, Ownable {
     // External contract
     Strings strings;
 
-    string Svg0 = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%' fill='url(#pattern)' /><defs><linearGradient id='gradient' x1='100%' y1='10%' x2='0%' y2='10%'><stop offset='6.25%' stop-color='#";
-    string Svg1 = "'/><stop offset='18.75%' stop-color='#";
-    string Svg2 = "'/><stop offset='31.25%' stop-color='#";
-    string Svg3 = "'/><stop offset='56.25%' stop-color='#";
-    string Svg4 = "'/><stop offset='68.75%' stop-color='#";
-    string Svg5 = "'/><stop offset='81.25%' stop-color='#";
-    string Svg6 = "'/><stop offset='93.75%' stop-color='#";
-    string Svg7 = "'/><stop offset='100%' stop-color='#";
-    string Svg8 = "'/></linearGradient></defs><pattern id='pattern' x='0' y='0' width='400%' height='100%' patternUnits='userSpaceOnUse'><rect x='-150%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-150%' to='50%' dur='";
-    string Svg9 = "ms' repeatCount='indefinite'/></rect><rect x='-350%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-350%' to='-150%' dur='";
-    string Svg10 = "ms' repeatCount='indefinite'/></rect></pattern></svg>";
-  
-
     constructor(
         string memory _name,
         string memory _symbol,
@@ -71,6 +58,8 @@ contract SvgBitpack is ERC721, Ownable {
         _safeMint(recipient, newTokenId);
         return newTokenId;
     }
+
+    /// VIEW TOKEN-URI 
 
     function tokenURI(uint256 tokenId)
         public
@@ -113,8 +102,8 @@ contract SvgBitpack is ERC721, Ownable {
         return finalTokenUri;
     }
 
-    /// READ FUNCTIONS ///
-
+    /// RENDER SVG FUNCTIONS ///
+    // Render 4 attributes @ a time to avoid stack too deep
     function render_1(uint256 tokenId) internal view returns (string memory) {
         uint256 attributes_ = attributes[tokenId];
     
@@ -123,6 +112,11 @@ contract SvgBitpack is ERC721, Ownable {
         uint24 a1;
         uint24 a2;
         uint24 a3;
+
+        string memory Svg0 = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%' fill='url(#pattern)' /><defs><linearGradient id='gradient' x1='100%' y1='10%' x2='0%' y2='10%'><stop offset='6.25%' stop-color='#";
+        string memory Svg1 = "'/><stop offset='18.75%' stop-color='#";
+        string memory Svg2 = "'/><stop offset='31.25%' stop-color='#";
+        string memory Svg3 = "'/><stop offset='56.25%' stop-color='#";
 
         string memory partialSvg;
         // Thank you v much Optimism team!
@@ -178,6 +172,11 @@ contract SvgBitpack is ERC721, Ownable {
         uint24 a6;
         uint24 a7;
 
+        string memory Svg4 = "'/><stop offset='68.75%' stop-color='#";
+        string memory Svg5 = "'/><stop offset='81.25%' stop-color='#";
+        string memory Svg6 = "'/><stop offset='93.75%' stop-color='#";
+        string memory Svg7 = "'/><stop offset='100%' stop-color='#";
+
         string memory partialSvg;
         // Thank you v much Optimism team!
         assembly {
@@ -223,11 +222,14 @@ contract SvgBitpack is ERC721, Ownable {
     ));
     }
 
-    function render_3(uint256 tokenId) internal view returns (string memory) {
+    function render_3(uint256 tokenId) internal view returns (string memory partialSvg) {
         uint256 attributes_ = attributes[tokenId];
         uint24 speed;
-        string memory partialSvg;
 
+        string memory Svg8 = "'/></linearGradient></defs><pattern id='pattern' x='0' y='0' width='400%' height='100%' patternUnits='userSpaceOnUse'><rect x='-150%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-150%' to='50%' dur='";
+        string memory Svg9 = "ms' repeatCount='indefinite'/></rect><rect x='-350%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-350%' to='-150%' dur='";
+        string memory Svg10 = "ms' repeatCount='indefinite'/></rect></pattern></svg>";
+  
         assembly {
      
             speed := shr(
@@ -239,7 +241,7 @@ contract SvgBitpack is ERC721, Ownable {
             )
         }
 
-        return  partialSvg = string(abi.encodePacked(
+        return partialSvg = string(abi.encodePacked(
         Svg8,
         strings.toString(speed),
         Svg9,
