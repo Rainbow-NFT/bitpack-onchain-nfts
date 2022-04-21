@@ -78,7 +78,7 @@ contract SvgUnoptimized is ERC721, Ownable {
         attributes[newTokenId].color7 = 0x88FF89;
         attributes[newTokenId].speed = 10000;
 
-        _safeMint(recipient, newTokenId);
+        _mint(recipient, newTokenId);
         return newTokenId;
     }
 

@@ -59,11 +59,6 @@ contract SvgBitpackTest is DSTest {
             .find();
     }
 
-    function testFailUnsafeContractReceiver() public {
-        vm.etch(address(1), bytes("mock code"));
-        svgBitpack.mintTo(address(1));
-    }
-
     function testTransfer() public {
          for (uint256 i = 0; i < 10000; ++i) {
         svgBitpack.mintTo(address(1));

@@ -55,7 +55,7 @@ contract SvgBitpack is ERC721, Ownable {
 
         attributes[newTokenId] = attributes_;
 
-        _safeMint(recipient, newTokenId);
+        _mint(recipient, newTokenId);
         return newTokenId;
     }
 
@@ -72,19 +72,17 @@ contract SvgBitpack is ERC721, Ownable {
             revert NonExistentTokenURI();
         }
     
-    string memory finalSvg = string(abi.encodePacked(
-        render_1(tokenId),
-        render_2(tokenId),
-        render_3(tokenId)
-        ));
-
     return finalTokenURI = string(abi.encodePacked("data:application/json;base64,", strings.encode(
             bytes(
                 string(
                     abi.encodePacked(
                         '{"name": "Rainbow", "description": "Bitpacked Rainbow on chain", "image": "data:image/svg+xml;base64,',
                         // Add data:image/svg+xml;base64 and then append our base64 encode our svg.
-                        strings.encode(bytes(finalSvg)),
+                        strings.encode(bytes(string(abi.encodePacked(
+                            render_1(tokenId),
+                            render_2(tokenId),
+                            render_3(tokenId)
+                            )))),
                         '"}'
                     )
                 )
@@ -216,10 +214,6 @@ contract SvgBitpack is ERC721, Ownable {
         uint256 attributes_ = attributes[tokenId];
         uint24 speed;
 
-        string memory Svg8 = "'/></linearGradient></defs><pattern id='pattern' x='0' y='0' width='400%' height='100%' patternUnits='userSpaceOnUse'><rect x='-150%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-150%' to='50%' dur='";
-        string memory Svg9 = "ms' repeatCount='indefinite'/></rect><rect x='-350%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-350%' to='-150%' dur='";
-        string memory Svg10 = "ms' repeatCount='indefinite'/></rect></pattern></svg>";
-  
         assembly {
      
             speed := shr(
@@ -233,11 +227,11 @@ contract SvgBitpack is ERC721, Ownable {
     // returning strings like this reduces gas for funcs like tokenURI & render_3 but increases
     // gas by almost 100,000 if done elsewhere.
     return partialSvg = string(abi.encodePacked(
-        Svg8,
+        "'/></linearGradient></defs><pattern id='pattern' x='0' y='0' width='400%' height='100%' patternUnits='userSpaceOnUse'><rect x='-150%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-150%' to='50%' dur='",
         strings.toString(speed),
-        Svg9,
+        "ms' repeatCount='indefinite'/></rect><rect x='-350%' y='0' width='200%' height='100%' fill='url(#gradient)' transform='rotate(-65)'><animate attributeType='XML' attributeName='x' from='-350%' to='-150%' dur='",
         strings.toString(speed),
-        Svg10
+        "ms' repeatCount='indefinite'/></rect></pattern></svg>"
     ));
     }
 }

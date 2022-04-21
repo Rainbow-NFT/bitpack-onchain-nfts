@@ -62,11 +62,6 @@ contract SvgUnoptimizedTest is DSTest {
             .find();
     }
 
-    function testFailUnsafeContractReceiver() public {
-        vm.etch(address(1), bytes("mock code"));
-        svgUnoptimized.mintTo(address(1));
-    }
-
     // Lmao
     function testTransfer() public {
         for (uint256 i = 0; i < 10000; ++i) {
