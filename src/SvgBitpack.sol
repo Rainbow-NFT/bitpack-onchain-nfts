@@ -66,23 +66,19 @@ contract SvgBitpack is ERC721, Ownable {
         virtual
         view
         override
-        returns (string memory)
+        returns (string memory finalTokenURI)
     {
         if (ownerOf[tokenId] == address(0)) {
             revert NonExistentTokenURI();
         }
-
-    string memory render1 = render_1(tokenId);
-    string memory render2 = render_2(tokenId);
-    string memory render3 = render_3(tokenId);
     
     string memory finalSvg = string(abi.encodePacked(
-       render1,
-       render2,
-       render3
+        render_1(tokenId),
+        render_2(tokenId),
+        render_3(tokenId)
         ));
 
-    string memory json = strings.encode(
+    return finalTokenURI = string(abi.encodePacked("data:application/json;base64,", strings.encode(
             bytes(
                 string(
                     abi.encodePacked(
@@ -93,13 +89,8 @@ contract SvgBitpack is ERC721, Ownable {
                     )
                 )
             )
-        );
-        
-        string memory finalTokenUri = string(
-        abi.encodePacked("data:application/json;base64,", json)
-    );
+    )));
 
-        return finalTokenUri;
     }
 
     /// RENDER SVG FUNCTIONS ///
@@ -150,7 +141,7 @@ contract SvgBitpack is ERC721, Ownable {
 
     }
 
-    return  partialSvg = string(abi.encodePacked(
+    return partialSvg = string(abi.encodePacked(
         Svg0,
         strings.uint24tohexstr(a0),
         Svg1,
@@ -159,7 +150,6 @@ contract SvgBitpack is ERC721, Ownable {
         strings.uint24tohexstr(a2),
         Svg3,
         strings.uint24tohexstr(a3)
-          
     ));
     }
 
@@ -240,14 +230,14 @@ contract SvgBitpack is ERC721, Ownable {
                 )
             )
         }
-
-        return partialSvg = string(abi.encodePacked(
+    // returning strings like this reduces gas for funcs like tokenURI & render_3 but increases
+    // gas by almost 100,000 if done elsewhere.
+    return partialSvg = string(abi.encodePacked(
         Svg8,
         strings.toString(speed),
         Svg9,
         strings.toString(speed),
         Svg10
     ));
-
     }
 }
